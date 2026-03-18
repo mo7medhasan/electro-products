@@ -15,7 +15,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-          <div className="flex min-h-screen flex-col gap-8 bg-linear-to-br mask-alpha from-gray-900 to-gray-800  text-white">
+          <div className="flex min-h-screen flex-col gap-8 bg-linear-to-br mask-alpha from-gray-900 to-gray-800  text-white pb-10" >
             <Header />
             {children}
           </div>
