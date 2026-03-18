@@ -68,7 +68,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
       outline:
         'border border-gray-300 focus:border-primary focus:ring-1 focus:ring-primary bg-transparent',
       filled:
-        'border-transparent bg-gray-100 focus:bg-white focus:border-primary focus:ring-1 focus:ring-primary',
+        'border-transparent bg-transparent focus:border-primary focus:ring-1 focus:ring-primary',
       flushed:
         'border-b border-gray-300 focus:border-primary bg-transparent rounded-none px-0',
     };

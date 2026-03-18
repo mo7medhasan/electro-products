@@ -1,7 +1,5 @@
-export default function ProductPage() {
-  return (
-    <div>
+import { notFound } from "next/navigation";
 
-    </div>
-  );
-}
+export default function ProductPage() {
+    notFound()
+}   

@@ -4,10 +4,14 @@ interface GetProductsParams {
   limit?: number;
   skip?: number;
 }
-export const getProducts = async ({ limit = 6, skip = 0 }: GetProductsParams = {}) => {
+export const getProducts = async ({
+  limit = 8,
+  skip = 0,
+}: GetProductsParams = {}) => {
   try {
-    
-    const response = await fetch(`${BASE_URL}/?limit=${limit}&offset=${skip}`);
+    const response = await fetch(`${BASE_URL}/?limit=${limit}&offset=${skip}`, {
+      cache: "no-store",
+    });
     if (!response.ok) {
       console.error("Failed to fetch products:", response.status);
       return [];
@@ -23,7 +27,7 @@ export const getProducts = async ({ limit = 6, skip = 0 }: GetProductsParams = {
 export const getProductsWithSearchAndCategory = async ({
   search,
   category,
-  limit = 6,
+  limit = 8,
   skip = 0,
 }: {
   search: string;
@@ -32,10 +36,15 @@ export const getProductsWithSearchAndCategory = async ({
   skip?: number;
 }) => {
   try {
-    const response = await fetch(
-      `${BASE_URL}/?title=${search}&category=${category}&limit=${limit}&offset=${skip}
-`
-    );
+    const params = new URLSearchParams();
+    if (search) params.set("title", search);
+    if (category) params.set("categoryId", category);
+    params.set("limit", limit.toString());
+    params.set("offset", skip.toString());
+
+    const response = await fetch(`${BASE_URL}/?${params.toString()}`, {
+      cache: "no-store",
+    });
     if (!response.ok) {
       console.error("Failed to search products:", response.status);
       return [];
@@ -48,19 +57,18 @@ export const getProductsWithSearchAndCategory = async ({
   }
 };
 
-export const getProductById = async (
-  id: string
-): Promise<Product | null> => {
+export const getProductById = async (id: string): Promise<Product | null> => {
   try {
     const response = await fetch(`${BASE_URL}/${id}`, {
-      cache: "no-store",
+      next: { revalidate: 3600 },
     });
 
     if (!response.ok) {
       if (response.status === 404) {
         return null;
       }
-      throw new Error("Failed to fetch product");
+      console.error("Failed to fetch product");
+      return null;
     }
 
     const data = await response.json();
