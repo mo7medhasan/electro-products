@@ -3,7 +3,6 @@
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuthStore } from "@/store/useAuthStore";
-import { checkEmailAvailability } from "@/services/auth.api";
 import Input from "@/components/shared/Input";
 import Button from "@/components/shared/Button";
 import { UserPlus, Mail, Lock, User } from "lucide-react";
@@ -43,17 +42,6 @@ export default function SignUpPage() {
 
     setIsSubmitting(true);
     try {
-      // Check email availability first
-      const isAvailable = await checkEmailAvailability(email);
-      if (!isAvailable) {
-        setFieldErrors((prev) => ({
-          ...prev,
-          email: "This email is already registered",
-        }));
-        setIsSubmitting(false);
-        return;
-      }
-
       await register({ name, email, password, avatar: "https://picsum.photos/800" });
       router.push("/login");
     } catch (err) {

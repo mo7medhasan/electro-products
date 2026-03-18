@@ -53,19 +53,3 @@ export const getUserProfile = async (accessToken: string): Promise<User> => {
   return response.json();
 };
 
-export const checkEmailAvailability = async (
-  email: string
-): Promise<boolean> => {
-  const response = await fetch(`${BASE_URL}/users/is-available`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ email }),
-  });
-
-  if (!response.ok) {
-    return false;
-  }
-
-  const data = await response.json();
-  return data.isAvailable;
-};
